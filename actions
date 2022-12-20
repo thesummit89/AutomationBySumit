@@ -1,0 +1,1408 @@
+
+
+public class ControlActions extends TestBase {
+	WebDriver driver;
+	public Actions action;
+	public WebDriverWait wait;
+	public WebDriverWait wait1;
+	public WebDriverWait shortWait;
+
+	public ControlActions(WebDriver driver){
+		this.driver = driver;
+		action = new Actions(this.driver);
+		wait = new WebDriverWait(driver, 20);
+		//For Sauce Run it has been observed that element are getting timeout so added more time
+		wait1 = new WebDriverWait(driver, 180);
+		shortWait = new WebDriverWait(driver, 0, 500);
+
+		PageFactory.initElements(driver, this);
+	}
+
+	public static Robot rs = null;
+
+
+	/*
+	 * @Purpose - This method 'isElementDisplayed' is used to find whether the webelement is displayed or not
+	 */
+	public void isElementDisplayed(By element) {
+		try {
+			driver.findElement(element).isDisplayed();
+		} catch (ElementNotVisibleException e) {
+			e.printStackTrace();
+			Assert.fail("Element not visible - " +element, e.getCause());
+		} catch (StaleElementReferenceException e) {
+			e.printStackTrace();
+			Assert.fail("Stale element reference. "+element, e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Element not displayed - " +element, e.getCause());
+
+		}
+
+	}/*
+	 * @Purpose - This method 'isElementDisplayed' is used to find whether the webelement is displayed or not
+	 */
+	public void isElementPresent(WebElement element) {
+		try {
+			element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+			 /******Added For Uldd Validation*****/
+			TC.get().freddieMacException="Element not visible - " +element;
+			 /************************************/
+			Assert.fail("Element not visible - " +element, e.getCause());
+		} catch (StaleElementReferenceException e) {
+			e.printStackTrace();
+			 /******Added For Uldd Validation*****/
+			TC.get().freddieMacException="Stale element reference. "+element;
+			 /************************************/
+			Assert.fail("Stale element reference. "+element, e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			 /******Added For Uldd Validation*****/
+			TC.get().freddieMacException="Element not displayed - " +element;
+			 /************************************/
+			Assert.fail("Element not displayed - " +element, e.getCause());
+		}
+	}
+
+	/** @author v-amahajan
+	 * This method is used to check if element is displayed
+	 * @param WebElement
+	 */
+	public boolean isElementDisplay(WebElement element) {
+		try {
+			return element.isDisplayed();
+		} catch(Exception e) {
+			return false;
+		}
+	}
+
+
+	/*
+	 * @Purpose - This method 'getUrl' is used to navigate to a Url passed in the argument and maximizes the window
+	 * Also wait till page load
+	 */
+	public  void getUrl(String url){
+		try{
+			driver.get(url);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);}
+		catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Page not loaded within 20 Seconds. URL - "+url);
+		}
+
+	}
+
+	/*
+	 * @Purpose - This method 'clickbutton' takes webElement as an argument and using action class move and click on the web Element
+	 */
+	public  void clickbutton(WebElement element) {
+		// isElementPresent(element);
+		try {
+			action.moveToElement(element).click();
+			action.build().perform();
+		} catch (ElementNotVisibleException e) {
+			e.printStackTrace();
+			Assert.fail("Issue while clicking on element - " +element, e.getCause());
+
+		} catch (StaleElementReferenceException e) {
+			e.printStackTrace();
+			Assert.fail("Stale element reference for " +element, e.getCause());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while clicking on web element - " +element, e.getCause());
+
+		}
+
+	}
+
+	/*
+	 * @Purpose - This method 'Click ON Element' takes webElement as an argument and using action class move and click on the web Element
+	 * Also  internally check whether element present or not
+	 */
+	public  void clickOnElement(WebElement element) {
+		try{
+			driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
+		}catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Timeout - element not detected even after 120 Seconds - " +element, e.getCause());
+		}
+		isElementPresent(element);
+		try {
+			action.moveToElement(element).click();
+			action.build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - element not detected even after 120 Seconds - " +element, e.getCause());
+		}
+
+	}
+
+	/*
+	 * @Purpose - This method 'selectDropDown' takes string value and webElement as arguments and
+	 * select value from dropdown as per the visible value
+	 */
+	public  void selectDropDown(String value, By element) {
+
+		try {
+			Select select = new Select(driver.findElement(element));
+			select.selectByVisibleText(value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while selecting an option in the dropdown - " +element, e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'selectDropDown' takes string value and webElement as arguments and
+	 * select value from dropdown as per the visible value
+	 */
+	public  void click(WebElement element) {
+		try {
+			element.click();
+		} catch (Exception e) {
+			e.printStackTrace();
+			TC.get().freddieMacException="Issue while clicking on element - " +element;
+			Assert.fail("Issue while clicking on element - " +element, e.getCause());
+		}
+	}
+	
+	/*
+	 * @Purpose - This method is used to click on WebElement with the appropriate message.
+	 */
+	public  void click(WebElement element ,String msg) {
+		try {
+			WaitforelementToBeClickable(element, msg);
+			element.click();
+		} catch (Exception e) {
+			 /******Added For Uldd Validation*****/
+			TC.get().freddieMacException="Issue while clicking on "+" '"+msg+"' "+".Locator - "+element;
+			 /************************************/
+			e.printStackTrace();
+			Assert.fail("Issue while clicking on "+msg+". Locator - " +element, e.getCause());
+		}
+	}
+	
+	/*
+	 * @Purpose - This method 'sendKeys' takes string value and webElement as arguments and
+	 * type string value in the element
+	 */
+	public  void sendKeys(WebElement element, String mesg) {
+		try {
+			element.sendKeys(mesg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Failed while entering value " +mesg+ " in to the " +element, e.getCause());
+
+		}
+	}
+	/*
+	 * @Purpose - This method 'switchToframeindex' is used to switch to the frame based on the index provide in the argument
+	 */
+	public  void switchToframeindex(int index) {
+		try {
+			driver.switchTo().frame(index);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while switching frame", e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'switchToframeNameorID' is used to switch to the frame based on the NameorID provide in the argument
+	 */
+	public  void switchToframeNameorID(String NameorID) {
+		try {
+			driver.switchTo().frame(NameorID);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while switching frame", e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'switchToDefault' is used to switch to the default i.e main document
+	 */
+	public  void switchToDefault() {
+		try {
+			driver.switchTo().defaultContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'actionclickTab' is used to send to an active element using action class
+	 */
+	public  void actionclickTab() {
+		try {
+			action.sendKeys(Keys.TAB).build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while tabbing out", e.getCause());
+		}
+	}
+	/*
+	 * @Purpose - This method 'actionclickDoubleTab' is used to perform "double tab" to an active element using action class
+	 */
+	public  void actionclickDoubleTab() {
+		try {
+			action.sendKeys(Keys.TAB, Keys.TAB).build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while tabbing out", e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'actionEnter' is used to press "Enter" key to an active element using action class
+	 */
+	public  void actionEnter() {
+		try {
+			action.sendKeys(Keys.ENTER);
+			action.build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while clicking on the ENTER key on the keyboard", e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'refreshPage' is used to refresh a webPage.
+	 */
+	public  void refreshPage() {
+		try {
+			driver.navigate().refresh();
+			//driver.navigate().refresh();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while refreshing the page", e.getCause());
+
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'waitforElementToBeDisplayed' is used to provide Selenium explicit wait on condition,visibility of element
+	 */
+	public  void waitforElementToBeDisplayed(WebElement element) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOf(element));
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - element not detected even after 180 Seconds - " +element, e.getCause());
+		}
+	}
+
+	public  void waitforElementToBeDisplayed(WebElement element,String fieldName) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOf(element));
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			TC.get().freddieMacException="Timeout - as the "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - " +element;
+			Assert.fail("Timeout - as the "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - " +element);
+		}
+	}
+
+	public  void waitforElementToBeDisplayedForTools(WebElement element) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOf(element));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - element not detected even after 180 Seconds - " +element, e.getCause());
+		}
+	}
+	public  void waitforElementToBeDisplayedForTools(WebElement element,String fieldName) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOf(element));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - as the "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - " +element);
+		}
+	}
+
+
+
+
+
+
+	public  void waitforvisibilityOfAllElements(List<WebElement> element) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOfAllElements(element));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - element not detected even after 180 Seconds - " +element, e.getCause());
+
+		}
+	}
+	public  void waitforvisibilityOfAllElements(List<WebElement> element,String field) {
+		try {
+			wait1.until(ExpectedConditions.visibilityOfAllElements(element));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - as the "+" '"+field+"' "+" is not detected even after 180 Seconds. Locator - " +element.get(0));
+
+		}
+	}
+	/*
+	 * @Purpose - This method 'WaitforelementToBeClickable' is used to provide selenium explicit wait on condition,elementToBeClickable
+	 */
+	public void WaitforelementToBeClickable(WebElement element)
+	{   try{
+		
+		wait1.until(ExpectedConditions.elementToBeClickable(element));
+	}catch(Exception e){
+		e.printStackTrace();
+		Assert.fail("Timeout - element not detected even after 180 Seconds - " +element, e.getCause());
+	}
+
+
+
+	}
+	
+	public void WaitforelementToBeClickableSpinner(WebElement element)
+	{   try{
+		wait1.until(ExpectedConditions.elementToBeClickable(element));
+	}catch(Exception e){
+		e.printStackTrace();
+		Assert.fail("Timeout - Element not clickable - " +element, e.getCause());
+	}
+	}
+	
+	public boolean isElementToBeClickable(WebElement element) {
+		try {
+			wait1.until(ExpectedConditions.elementToBeClickable(element));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+	
+	public void WaitforelementSelectionStateToBe(WebElement element,boolean selected)
+	{
+		try {
+			wait1.until(ExpectedConditions.elementSelectionStateToBe(element, selected));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Timeout, while selecting element - " +element, e.getCause());
+		}
+
+	}
+
+	public void frameToBeAvailableAndSwitchToIt(int element)
+	{
+		try {
+			wait1.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Timeout - Issue while selecting frame - " +element, e.getCause());
+		}
+
+	}
+
+
+	public void WaitforinvisibilityOf(List<WebElement> listOfItemInSearchResult)
+	{
+		try {
+			wait1.until(ExpectedConditions.invisibilityOfAllElements(listOfItemInSearchResult));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Timeout - elements not visible - " +listOfItemInSearchResult, e.getCause());
+			
+		}
+
+	}
+
+	public void WaitforelementToBeSelected(WebElement element)
+	{
+		try {
+			wait1.until(ExpectedConditions.elementToBeSelected(element));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Timeout - Not able to select element - " +element, e.getCause());
+		}
+	}
+
+	public void waifortextToBePresentInElementValue(WebElement element,String text)
+	{
+		try {
+			wait1.until(ExpectedConditions.textToBePresentInElementValue(element, text));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Timeout - "+ text +" element not present - " +element, e.getCause());
+		}
+	}
+
+	/** This method is used to wait till the alert is present
+	 *
+	 */
+	public  void waitforAlertToBeDisplayed() {
+		try {
+			wait1.until(ExpectedConditions.alertIsPresent());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Timeout - Alert not displayed", e.getCause());
+		}
+	}
+
+
+	/*
+	 * @Purpose - This method 'moveToElementAction' is used to move to an element using action class
+	 */
+	public  void moveToElementAction(WebElement element) {
+		try {
+			action.moveToElement(element).click();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to move to the given action element - "+element, e.getCause());
+		}
+	}
+	public  void moveToElementAction(WebElement element, String fieldName) {
+		try {
+			action.moveToElement(element).click();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to move to the given field - "+fieldName+". Locator - " +element);
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'actionSendKeys' is used to send values using action class
+	 */
+	public  void actionSendKeys(String str) {
+		try {
+			action.sendKeys(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to send" +str+ " to the given action element. " , e.getCause());
+
+		}
+	}
+	
+	public  void actionSendKeys(String str, String fieldName) {
+		try {
+			action.sendKeys(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to send" +str+ " text to "+fieldName+".");
+
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'buildPerform' is used to build the action and then perform the action
+	 */
+	public  void buildPerform() {
+		try {
+			action.build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to build the action element", e.getCause());
+
+		}
+	}
+	/*
+	 * @Purpose - This method 'buildPerform' is used to build the action and then perform the action
+	 */
+	public  void buildPerform(String message) {
+		try {
+			action.build().perform();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Not able to build the action element for " +message , e.getCause());
+
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'select' is used to create an object of Select class and return the object
+	 */
+	public Select select(WebElement element)
+	{
+		Select select = new Select(element);
+		return select;
+	}
+
+	/*
+	 * @Purpose - This method 'uploadFnmFile' is used to upload a file using Autoit
+	 */
+	public  void uploadFnmFile(String Filepath) {
+		try {
+			Runtime.getRuntime().exec(Filepath);
+
+			Thread.sleep(5000);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			Assert.fail("Failed to upload the Fnm file", e.getCause());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Assert.fail("Failed to upload the Fnm file", e.getCause());
+		}
+	}
+
+	/*
+	 * @Purpose - This method 'robot' is used to create an object of robot class and return the object
+	 */
+	public  Robot robot() {
+		try {
+			rs = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		return rs;
+
+	}
+
+	/*
+	 * @Purpose - This method 'fileUpload' is used to upload file in the Webpage using robot class keyevent
+	 */
+	public  void fileUpload(String filepath) {
+		try {
+			File file = new File(filepath);
+			String str = file.getAbsolutePath();
+			StringSelection selection = new StringSelection(str);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(selection, selection);
+			rs = robot();
+			rs.keyPress(KeyEvent.VK_CONTROL);
+			rs.keyPress(KeyEvent.VK_V);
+			rs.keyRelease(KeyEvent.VK_V);
+			rs.keyRelease(KeyEvent.VK_CONTROL);
+			rs.keyPress(KeyEvent.VK_ENTER);
+			rs.keyRelease(KeyEvent.VK_ENTER);
+			rs.keyRelease(KeyEvent.VK_ENTER);
+			rs.delay(5000);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	/* @Purpose:- This Method is used to close the print Window..*/
+	public void ClosePrintWindow() {
+		try {
+			rs = robot();
+			rs.keyPress(KeyEvent.VK_ESCAPE);
+			rs.keyRelease(KeyEvent.VK_ESCAPE);
+			//act.sendKeys(Keys.ESCAPE);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	/*
+	 *  Selecting Dropdown by Visible value
+	 */
+	public void selectDropDownValue(String value, WebElement element) {
+		try {
+			Select select = new Select(element);
+			select.selectByVisibleText(value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while selecting the value - "+value +" in the dropdown - " +element, e.getCause());
+		}
+	}
+	public void selectDropDown(String value, WebElement element) {
+		try {
+			Select select = new Select(element);
+			select.selectByValue(value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while selecting the value - "+value +" in the dropdown - " +element, e.getCause());
+		}
+	}
+	public void selectDropDownByIndex(int i,WebElement element){
+		try{
+			Select select = new Select(element);
+			select.selectByIndex(i);
+		}catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Issue while selecting the value - index "+i +" for the dropdown - " +element, e.getCause());
+		}
+	}
+	public String selectDefaultOption(WebElement element) {
+		String defaultItemOption="";
+		try {
+			Select select = new Select(element);
+			WebElement option = select.getFirstSelectedOption();
+			defaultItemOption = option.getText();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while loading the dropdown - " +element, e.getCause());
+		}
+		return defaultItemOption;
+	}
+	public void switchToframeId(int id) {
+		try {
+			driver.switchTo().frame(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while switching to the frame by Index - " +id, e.getCause());
+
+		}
+	}
+
+	public void switchToframeByLocators(WebElement element) {
+		try {
+			driver.switchTo().frame(element);
+
+		} catch (StaleElementReferenceException e) {
+			System.err.println("Page Refreshed Because of Stale element issue ");
+			driver.navigate().refresh();
+			driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+			waitForFrameToAvailable(element);
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while switching frame", e.getCause());
+		}
+	}
+	
+	public void switchToframeByLocators(WebElement element ,String page) {
+		try {
+			driver.switchTo().frame(element);
+
+		} catch (StaleElementReferenceException e) {
+			System.err.println("Page Refreshed Because of Stale element issue ");
+			driver.navigate().refresh();
+			driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+			waitForFrameToAvailable(element);
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			TC.get().freddieMacException="Issue while switching frame on the page - "+" '"+page+"' "+" Locator - " +element;
+			Assert.fail("Issue while switching frame on the page - "+" '"+page+"' "+" Locator - " +element);
+		}
+	}
+	public void waitForFrameToAvailable(WebElement element ){
+		try{
+			wait1.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Frame not available " +element, e.getCause());
+		}
+
+	}
+	public void waitForFrameToAvailable(WebElement element ,String page){
+		try{
+			wait1.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Frame not available for page "+page+". Locator - " +element, e.getCause());
+		}
+
+	}
+
+
+	public void actionScrollDown(){
+		try {
+			action.keyDown(Keys.CONTROL).sendKeys(Keys.END).perform();		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+
+		}
+	}
+	public void actionScrollUp(){
+		try {
+			action.keyDown(Keys.CONTROL).sendKeys(Keys.HOME).perform();		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+
+		}
+	}
+
+	public void actionSendKeys(WebElement element, String str){
+		try {
+			action.click(element).sendKeys(str).sendKeys(Keys.TAB).build().perform();;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Issue while sending the string - "+str+" to the element - " +element, e.getCause());
+
+		}
+	}
+	public void actionClearTextBox(WebElement element){
+		try{
+			action.click(element).doubleClick().sendKeys(Keys.BACK_SPACE).build().perform();
+
+		}catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Issue while clearing the textbox. Locator - " +element, e.getCause());
+
+		}
+	}
+
+	public void clickDoubleTab() {
+		try {
+			action.sendKeys(Keys.TAB, Keys.TAB).build().perform();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Issue while tabbing out " + e.getCause());
+
+		}
+	}
+
+	//-------------==============NEXT_GEN_LOS MIGRATION==============-----------------------
+	public String modalDropDownFieldXPath = "//div[@class='kui-select-container']";
+	public String modalDropDownElementsListXPath = "//div[contains(@class, 'kui-select__menu-list')]/child::div[contains(@class, 'kui-select__option')]";
+	public String modalDropDownListPlaceholderXPath = "//div[contains(@class, 'kui-select__menu-list')]/child::div[contains(@class, 'kui-select__menu-notice')]";
+	public String xPath_Iframe_Encompass_Tools_Pages = "//iframe[contains(@id, 'guest-ENCW_CUSTOM_TOOL-sandbox')]";
+	public String xPath_Iframe_Encompass_Conditions_Page = "//iframe[contains(@id, 'conditions-container')]";
+
+	//    public static synchronized WebDriver getDriver(){
+//        return tdriver.get();
+//    }
+	//Helper methods. Wait and returns the element.
+	public WebElement perform_waitUntilClickable(By locator) {
+		return wait.until(ExpectedConditions.elementToBeClickable(locator));
+	}
+	public WebElement perform_waitUntilVisibility(By locator) {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+	public WebElement perform_waitUntilPresent(By locator) {
+		return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+	}
+	public Boolean perform_waitUntilNotVisible(By locator) {
+		return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+	}
+	public Boolean perform_waitUntilNotVisible(String xPath) {
+		return wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(xPath)));
+	}
+	public Boolean perform_waitUntilNotVisible(WebElement element) {
+		return wait.until(ExpectedConditions.invisibilityOf(element));
+	}
+	public WebElement perform_waitUntilClickable(WebElement element) {
+		return wait.until(ExpectedConditions.elementToBeClickable(element));
+	}
+	public WebElement perform_waitUntilVisibility(WebElement element) {
+		return wait.until(ExpectedConditions.visibilityOf(element));
+	}
+	public  void switchToframeByIFrameElement(WebElement element) {
+		try {
+			driver.switchTo().frame(element);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//Helper methods. Wait and returns the list of elements.
+	public WebElement perform_scrollToElement_ByElement(WebElement element){
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		return element;
+	}
+
+	public List<WebElement> perform_waitUntilListPresent(By locator) {
+		List<WebElement> placedReviews_PresentElements;
+		try {
+			placedReviews_PresentElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+		}
+		catch(org.openqa.selenium.StaleElementReferenceException ex)
+		{
+			placedReviews_PresentElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+		}
+		return placedReviews_PresentElements;
+	}
+	public List<WebElement> perform_waitUntilListVisible(By locator) {
+		List<WebElement> placedReviews_VisibleElements;
+		try {
+			placedReviews_VisibleElements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+		}
+		catch(org.openqa.selenium.StaleElementReferenceException ex)
+		{
+			placedReviews_VisibleElements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+		}
+		return placedReviews_VisibleElements;
+	}
+	public List<WebElement> perform_waitUntilListDefault(By locator) {
+		List<WebElement> placedReviews_FindedBuDefaultElements;
+		try {
+			placedReviews_FindedBuDefaultElements = driver.findElements(locator);
+		}
+		catch(StaleElementReferenceException ex)
+		{
+			placedReviews_FindedBuDefaultElements =  driver.findElements(locator);
+		}
+		return placedReviews_FindedBuDefaultElements;
+	}
+
+	//-------------=================//////GENERAL\\\\\===============--------------------
+	public int perform_Get_RandomNumber_FromBoundary(int min, int max){
+		Random random = new Random();
+		int randomNumber = min + random.nextInt(max);
+		return randomNumber;
+	}
+	public int perform_Get_RandomNumber_FromBoundary_MathRandom(int min, int max){
+//		double random_double = Math.random() * (max - min + 1) + min;
+
+		//Generate random int value from 50 to 100
+		int randomNumber = (int)(Math.random() * (max - min + 1) + min);
+		return randomNumber;
+	}
+
+	public String perform_Get_RandomWord(int wordLength) {
+		Random r = new Random(); // Intialize a Random Number Generator with SysTime as the seed
+		StringBuilder sb = new StringBuilder(wordLength);
+		for(int i = 0; i < wordLength; i++) { // For each letter in the word
+			char tmp = (char) ('a' + r.nextInt('z' - 'a')); // Generate a letter between a and z
+			sb.append(tmp); // Add it to the String
+		}
+		return sb.toString();
+	}
+	public void perform_click_outside_of_element(){
+		perform_GetElementByXPath("//body").click();
+	}
+	public WebElement element_Iframe_Encompass_Tools_Pages() {
+		return perform_GetElementByXPath_WithWaitType(xPath_Iframe_Encompass_Tools_Pages, WaitType.WhenVisible);
+	}
+	public WebElement element_Iframe_Encompass_Tools_Pages_ShortWait() {
+		return shortWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPath_Iframe_Encompass_Tools_Pages)));
+	}
+	public WebElement element_Iframe_Encompass_Conditions_Page() {
+		return perform_GetElementByXPath_WithWaitType(xPath_Iframe_Encompass_Conditions_Page, WaitType.WhenVisible);
+	}
+	public WebElement element_Iframe_Encompass_Conditions_Page_ShortWait() {
+		return shortWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPath_Iframe_Encompass_Conditions_Page)));
+	}
+
+
+	public ArrayList<String> perform_convertListOfWebElements_ToListOfStrings(List<WebElement> webElementsList){
+		ArrayList<String> listOfStrings = new ArrayList<>();
+		for(WebElement element:webElementsList){
+			listOfStrings.add(element.getText());
+		}
+		return listOfStrings;
+	}
+	//@Step("Open the page")
+	public void perform_OpenUrl(String url) {
+		driver.manage().timeouts().pageLoadTimeout(
+				30, TimeUnit.SECONDS);
+		try {
+			driver.get(url);
+		} catch (Exception ex) {
+			System.out.println("Page was not loaded in 30 seconds." + ex);
+		}
+	}
+	//@Step("Get Current URL")
+	public String perform_GetCurrentUrl(){
+		return driver.getCurrentUrl();
+	}
+	//@Step("Click on the element")
+	public void perform_ClickOnElement(WebElement webElement){
+		webElement.click();
+/*        try {
+            waitUntilElementClickable(webElement).click();
+        }catch(ElementClickInterceptedException e){
+            waitUntilElementVisibility(webElement).click();
+        }*/
+	}
+	//@Step("Type text into element by XPath: ")
+	public void perform_PutText(String xPath, String value) {
+		WebElement element = perform_GetElementByXPath(xPath);
+		perform_ClickOnElement(element);
+		element.sendKeys(value);
+	}
+	//@Step("Get Element By XPath and Specific Condition:")
+	public WebElement perform_GetElementByXPath_WithWaitType(String xPath, WaitType expCond){
+		switch (expCond){
+			case WhenClickable:
+				return perform_waitUntilClickable(By.xpath(xPath));
+			case WhenVisible:
+				return perform_waitUntilVisibility(By.xpath(xPath));
+			case WhenPresent:
+				return perform_waitUntilPresent(By.xpath(xPath));
+			default:
+				return driver.findElement(By.xpath(xPath));
+		}
+	}
+	//@Step("Get List of Elements By XPath and Specific Condition:")
+	public List<WebElement> perform_GetListOfElementsByXPath_WithWaitType(String xPath, WaitType expCond){
+		switch (expCond){
+			case WhenVisible:
+				return perform_waitUntilListVisible(By.xpath(xPath));
+			case WhenPresent:
+				return perform_waitUntilListPresent(By.xpath(xPath));
+			default:
+				return perform_waitUntilListDefault(By.xpath(xPath));
+		}
+	}
+	//@Step("Get Element By XPath(trying WaitUntilClickable, WaitUntilVisibility, WaitUntilPresent, defaultFindElement):")
+	public WebElement perform_GetElementByXPath(String xPath){
+		WebElement webElement;
+		try{
+			webElement = perform_waitUntilClickable(By.xpath(xPath));
+		}catch(TimeoutException e){
+			webElement = perform_waitUntilVisibility(By.xpath(xPath));
+		}
+		try{
+			webElement = perform_waitUntilPresent(By.xpath(xPath));
+		}catch(TimeoutException e2){
+			webElement = driver.findElement(By.xpath(xPath));
+		}
+		return webElement;
+	}
+	//@Step("Get List of Elements By XPath and Specific Condition:")
+	public List<WebElement> perform_GetListOfElementsByXPath(String xPath){
+		return perform_waitUntilListVisible(By.xpath(xPath));
+	}
+	//@Step("{0}")
+	public void perform_LogToReport(String message) {
+		log4j(message);
+	}
+
+	//To wrap the text to the element
+	public String perform_InjectWrappedText(String xpath, WebDriver driver){
+		String randomId = UUID.randomUUID().toString();
+		StringBuilder script = new StringBuilder();
+		script
+				.append("var webElementWrapper = document.createElement(\"span\");").append("\n")
+				.append("var text = document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.cloneNode(true);").append("\n")
+				.append("var body = document.getElementsByTagName(\"body\");").append("\n")
+				.append("webElementWrapper.appendChild(text);").append("\n")
+				.append("body.item(0).appendChild(webElementWrapper);").append("\n")
+				.append("var att = document.createAttribute(\"id\");").append("\n")
+				.append("att.value = \""+randomId+"\";").append("\n")
+				.append("webElementWrapper.setAttributeNode(att);");
+		((JavascriptExecutor)driver).executeScript(script.toString());
+		return randomId;
+	}
+	
+	public String perform_getTextValueFromDOM_byWebElement(WebElement ele, String field) {
+		waitforElementToBeDisplayed(ele, field);
+		String errorMsg = "";
+		try {
+			errorMsg = ele.getText();
+		} catch (Exception e) {
+			Assert.fail("Failed while getting Text from Field" + field);
+		}
+		return errorMsg;
+	}
+
+	public Boolean perform_CheckIfelementPresentInTheList(List<WebElement> list, String element){
+		Boolean checkIfPresent = false;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getText().equals(element)) {
+				list.get(i).click();
+				checkIfPresent = true;
+				break;
+			}
+		}
+		return checkIfPresent;
+	}
+	public Boolean perform_CheckIfElementsInTheListsAreSame(ArrayList<String> listA, ArrayList<String> listB){
+		if(!(listA.size()==listB.size())){
+			return false;
+		}
+		for (int i = 0; i < listA.size(); i++) {
+			for (int j = 0; j < listB.size(); j++) {
+				if(!listA.get(i).equals(listB.get(j))){
+				
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public Boolean perform_CheckIfElementsInTheListsAreSame(List<WebElement> listA, List<WebElement> listB){
+		if(!(listA.size()==listB.size())){
+			return false;
+		}
+		for (int i = 0; i < listA.size(); i++) {
+			for (int j = 0; j < listB.size(); j++) {
+				if(!listA.get(i).getText().equals(listB.get(j).getText())){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public Boolean perform_CheckIfElementsInTheListsAreSame(ArrayList<String> listA, List<WebElement> listB){
+		if(!(listA.size()==listB.size())){
+			return false;
+		}
+		for (int i = 0; i < listA.size(); i++) {
+			if(!listA.get(i).equals(listB.get(i).getText())){
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
+
+	public Select perform_GetDropDownSelectionByXPath(String xPath){
+		return new Select(perform_GetElementByXPath(xPath));
+	}
+	public void perform_ClickWithJavaScriptExecutor(WebElement element){
+		try {
+			JavascriptExecutor js= (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", element);
+		}catch(Exception e) {
+			Assert.fail("Issue while clicking on the element via Java Script executor - "+element+" ", e.getCause());
+		}
+	}
+	
+	public void perform_ClickWithJavaScriptExecutor(WebElement element, String fieldName){
+		try {
+			JavascriptExecutor js= (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", element);
+		}catch(Exception e) {
+			TC.get().freddieMacException="Issue while clicking on "+fieldName+" via Java Script executor. Locator - "+element;
+			Assert.fail("Issue while clicking on "+fieldName+" via Java Script executor. Locator - "+element, e.getCause());
+		}
+	}
+	//-------------=================\\\\\\\____//////===============--------------------
+
+	//--------=========//////WORK FOR ANY MODALS ON NEXT_GEN_LOS\\\\\==========---------
+
+	//@Step("Get Drop-Down Field")
+	public WebElement element_ReactDropDown_DropDownField() {
+		return perform_GetElementByXPath(modalDropDownFieldXPath);
+	}
+
+
+	//NOTE: The drop-down list should be open before using this method!
+	public List<WebElement> elements_ReactDropDown_DropDownElementsList() {
+		return perform_GetListOfElementsByXPath_WithWaitType(modalDropDownElementsListXPath, WaitType.WhenClickable);
+	}
+
+	//NOTE: The drop-down list should be open before using this method!
+	public void perform_ReactDropDown_SelectDropDownElementByName(String element) {
+		List<WebElement> elements = elements_ReactDropDown_DropDownElementsList();
+		Boolean checkIfPresent = false;
+		for (int i = 0; i < elements.size(); i++) {
+			if(elements.get(i).getText().equals(element)){
+				elements.get(i).click();
+				checkIfPresent = true;
+				break;
+			}
+		}
+		Assert.assertTrue(checkIfPresent, "The option \""+element+"\" - should be in the list!");
+	}
+	//@Step("Get the placeholder for empty drop-down list")
+	public WebElement element_DropDownListPlaceholder_LOS_Modal() {
+		return perform_GetElementByXPath(modalDropDownListPlaceholderXPath);
+	}
+	//-------------=================\\\\\\\____//////===============--------------------
+
+	//-------------=================//////WORK DASHBOARD CONDITIONS\\\\\===============--------------------
+
+	/**Example:
+	 Condition text in the drop-down ---> "APPR07: The minimum appraisal eligible for purchase is 2075/2055."
+	 This Method will return -----------> "APPR07"
+	 */
+	public ArrayList<String> perform_Get_ConditionCode_From_ConditionNameInDropDown (ArrayList<String> dropDownConditions){
+		ArrayList<String> addedConditions_Code = new ArrayList<>();
+		ArrayList<String> addedConditions_Descriptions = new ArrayList<>();
+		String temp1="";
+		String temp2="";
+		int k = 0;
+		for (int i = 0; i< dropDownConditions.size(); i++){
+			for(int j=0; j< dropDownConditions.get(i).length(); j++){
+				if(dropDownConditions.get(i).charAt(j)==':'){
+					addedConditions_Code.add(temp1);
+					temp1="";
+					k=j+2;
+					break;
+				}else{
+					temp1 = temp1 + dropDownConditions.get(i).charAt(j);
+				}
+			}
+			for(int j=k; j< dropDownConditions.get(i).length(); j++){
+				temp2 = temp2 + dropDownConditions.get(i).charAt(j);
+			}
+			addedConditions_Descriptions.add(temp2);
+			temp2 = "";
+		}
+		return addedConditions_Code;
+	}
+
+	/**Example:
+	 Condition text in the drop-down ---> "APPR07: The minimum appraisal eligible for purchase is 2075/2055."
+	 This Method will return -------------------> "The minimum appraisal eligible for purchase is 2075/2055."
+	 */
+	public ArrayList<String> perform_Get_ConditionDescription_From_ConditionNameInDropDown (ArrayList<String> dropDownConditions){
+		ArrayList<String> addedConditions_Code = new ArrayList<>();
+		ArrayList<String> addedConditions_Descriptions = new ArrayList<>();
+		String temp1="";
+		String temp2="";
+		int k = 0;
+		for (int i = 0; i< dropDownConditions.size(); i++){
+			for(int j=0; j< dropDownConditions.get(i).length(); j++){
+				if(dropDownConditions.get(i).charAt(j)==':'){
+					addedConditions_Code.add(temp1);
+					temp1="";
+					k=j+2;
+					break;
+				}else{
+					temp1 = temp1 + dropDownConditions.get(i).charAt(j);
+				}
+			}
+			for(int j=k; j< dropDownConditions.get(i).length(); j++){
+				temp2 = temp2 + dropDownConditions.get(i).charAt(j);
+			}
+			addedConditions_Descriptions.add(temp2);
+			temp2 = "";
+		}
+		return addedConditions_Descriptions;
+	}
+
+	//-------------=================\\\\\\\_______________________//////===============--------------------
+
+	//-------------=================//////OTHER METHODS\\\\\===============--------------------
+	public boolean waitForNewWindow(int timeoutMilisec){
+		boolean flag = false;
+		int counter = 0;
+		while(!flag){
+			try {
+				Set<String> winId = driver.getWindowHandles();
+				if(winId.size() > 1){
+					flag = true;
+					return flag;
+				}
+				Thread.sleep(500);
+				counter=counter+500;
+				if(counter > timeoutMilisec){
+					return flag;
+				}
+			} catch (Exception e) {
+				log4j(e.getMessage());
+				return false;
+			}
+		}
+		return flag;
+	}
+	//-------------=================\\\\\\\___________________//////===============--------------------
+	public void WaitforinvisibilityOf(WebElement loadSpinner) {
+		try {
+			wait.until(ExpectedConditions.invisibilityOf(loadSpinner));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail("Load Spinner not detected.");
+		}
+	}
+	
+	public void WaitforinvisibilityOfSpinner(WebElement loadSpinner) {
+		wait1.until(ExpectedConditions.invisibilityOf(loadSpinner));
+
+	}
+
+	public static List<String> getList(List<WebElement> element) {
+		List<String> list = new ArrayList<String>();
+		List<WebElement> elements = element;
+		int i = 0;
+		try {
+			for (i = 0; i < elements.size(); i++) {
+				list.add(elements.get(i).getText());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Issue while getting Lists. Locator: " + elements.get(i));
+		}
+		return list;
+
+	}
+
+	public List<String> getListByScrollingToElement(List<WebElement> element){
+
+		List<String> list=new ArrayList<String>();
+
+		List<WebElement> elements = element;		
+		for (int i=0; i<elements.size();i++){
+			perform_scrollToElement_ByElement(elements.get(i));
+			list.add(elements.get(i).getText());
+		}
+		return list;
+	}
+	public String getCount(WebElement element) {
+		String total = element.getText();
+		String[] count = total.split(" ");
+		return count[0];
+	}
+	
+	public void pageLoadTimeout(String message) {
+		try {
+			driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail(message+" not loaded within 120 seconds");
+			 
+		}
+	}
+	
+	/*
+	 * @Purpose - This method 'WaitforelementToBeClickable' is used to provide selenium explicit wait on condition,elementToBeClickable
+	 * @parameter- WebElement , String Message 
+	 */
+	public void WaitforelementToBeClickable(WebElement element,String fieldName)
+	{   try{
+		
+		wait1.until(ExpectedConditions.elementToBeClickable(element));
+	}catch(Exception e){
+		e.printStackTrace();
+		TC.get().freddieMacException=fieldName+" button/menu is not clickable/detectable, even after 180 seconds of wait. Locator - " +element;
+		Assert.fail(fieldName+" button/menu is not clickable/detectable, even after 180 seconds of wait. Locator - " +element, e.getCause());
+	}
+	}
+	
+	public void switchToWindow(String windowId, String msg){
+		try{
+			driver.switchTo().window(windowId);
+		}catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Issue while switching to "+msg+ " window", e.getCause());
+		}
+	}
+	public void openNewTab(){
+		try{
+			((JavascriptExecutor) driver).executeScript("window.open()");
+		}catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Issue while opening a New Tab/Window", e.getCause());
+		}
+	}
+	
+	public void waitForAttributeConatins(WebElement ele, String atrribute , String value ,String field){
+		try{
+			wait.until(ExpectedConditions.attributeContains(ele, atrribute, value));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			Assert.fail("Field - "+"'"+field+"'"+" is disabled, which is not expected", e.getCause());
+		}
+	}
+	
+	public void actionMouseHover(WebElement element) {
+		try {
+			action.moveToElement(element).build().perform();
+		}catch(Exception E) {
+			Assert.fail("Issue while performing Mouse Hover action on the element - " +element);
+		}
+	}
+	
+	/**
+	  *
+	  * @param locator - Take By.xpath,css,id  etc as locator to find visibility of element
+	  * @param fieldName  - Field name for the element
+	  */
+		public void waitforElementToBeDisplayed(By locator,String fieldName) {
+			try {
+				wait1.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			} catch (Exception e) {
+				e.printStackTrace();
+				 /******Added For Uldd Validation*****/
+				TC.get().freddieMacException="Timeout - as the Data Key "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - "+locator;
+				 /************************************/
+				Assert.fail("Timeout - as the "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - "+locator);
+			}
+		}
+		
+		/**
+		 *
+		 * @param locator Take By.xpath,css,id  etc as locator to find visibility of All elements
+		 * @param fieldName Field name for the element
+		 */
+		public void waitforAllElementToBeDisplayed(By locator,String fieldName) {
+			try {
+				wait1.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("Timeout - as the "+" '"+fieldName+"' "+" is not detected even after 180 Seconds. Locator - "+locator);
+			}
+		}
+		
+	
+	/****************Customized Wait ********************************************/
+	/**
+	 * This wait is to check value is populated in text box field
+	 * @param locator
+	 * @param timeoutInseconds
+	 */
+	 public void waitForValueToBePopulatedInField(By locator , int timeoutInseconds){
+	        WebDriverWait wait = new WebDriverWait(driver, timeoutInseconds);
+	        wait.until(new ExpectedCondition<Boolean>() {
+	        	public Boolean apply(WebDriver driver) {
+	                        if (driver.findElement(locator).getAttribute("value") != null
+	                        		||!driver.findElement(locator).getAttribute("value").isEmpty()||
+	                        		!driver.findElement(locator).getAttribute("value").equals("")){
+	        			return Boolean.TRUE;
+	        		}
+	        		return null;
+	            }
+	        }); 
+	    }
+	
+	 public void waitForValueToBePopulatedInField(WebElement element , int timeoutInseconds){
+	        WebDriverWait wait = new WebDriverWait(driver, timeoutInseconds);
+	        wait.until(new ExpectedCondition<Boolean>() {
+	        	public Boolean apply(WebDriver driver) {
+	                        if (element.getAttribute("value") != null
+	                        		||!element.getAttribute("value").isEmpty()||
+	                        		!element.getAttribute("value").equals("")){
+	        			return Boolean.TRUE;
+	        		}
+	        		return null;
+	            }
+	        }); 
+	    } 
+	 
+	 public WebElement findElement(By locator,String fieldName) {
+		 if(!isElementDisplay(driver.findElement(locator))) {
+			 waitforElementToBeDisplayed(locator, fieldName);
+		 }
+		 return driver.findElement(locator);
+	 }
+	 
+	 public void scrollToViewAlignBottom(WebElement element) {
+		 JavascriptExecutor j = (JavascriptExecutor)driver;
+		 j.executeScript ("arguments[0].scrollIntoView(false)", element);
+	 }
+	 
+	 public void scrollToViewAlignCenter(WebElement element) {
+		 JavascriptExecutor j = (JavascriptExecutor)driver;
+		 j.executeScript ("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'})", element);
+	 }
+	 public void scrollToViewAlignCenter(WebElement element ,String msg) {
+		 try {
+			JavascriptExecutor j = (JavascriptExecutor)driver;
+			 j.executeScript ("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'})", element);
+		} catch (Exception e) {
+			e.printStackTrace();
+			TC.get().freddieMacException="Failed while Aligning"+ msg +"to Center.PFA locator: " +element;
+			Assert.fail("Failed while Aligning"+ msg +"to Center.PFA locator: " +element);
+			
+		}
+	 }
+	
+	
+	/****************************************************************************/
+}
