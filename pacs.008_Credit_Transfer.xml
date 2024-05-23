@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AMP version="4.2.0">
+	<Status>
+		<CurrentStatus>
+			<Status>ProcessingPausedWait For Authorisation</Status>
+			<StatusGranularity>
+				<Phase>Processing</Phase>
+				<Action>Paused</Action>
+				<Reason>Wait For Authorisation</Reason>
+			</StatusGranularity>
+			<StatusDate>2022-04-14T14:36:58.395+08:00</StatusDate>
+			<StatusChangeSource>PN2P</StatusChangeSource>
+			<Message>The message was successfully sent to the backend application</Message>
+		</CurrentStatus>
+	</Status>
+	<Header>
+		<Direction>DISTRIBUTION</Direction>
+		<Protocol>Swift-InterAct</Protocol>
+		<Service>mas.scrips!pi</Service>
+		<ProfileCode>RTGS_IN</ProfileCode>
+		<SenderAddress>ou=tpa,o=masgsgsc,o=swift</SenderAddress>
+		<Sender>
+			<InstitutionName>MONETORY AUTHORITY OF SINGAPORE</InstitutionName>
+			<Address>MAS BUILDING 26-00 SGENTON WAY</Address>
+			<City>SINGAPORE</City>
+		</Sender>
+		<ReceiverAddress>ou=tpb,o=masgsgsc,o=swift</ReceiverAddress>
+		<Receiver>
+			<InstitutionName>MONETORY AUTHORITY OF SINGAPORE</InstitutionName>
+			<Address>MAS BUILDING 26-00 SGENTON WAY</Address>
+			<City>SINGAPORE</City>
+		</Receiver>
+		<MessageReference>OLZXQ6GGX1-04132022-001</MessageReference>
+		<TransactionReference>{{transactionReference}}</TransactionReference>
+		<TransferReference>mna00001-2022-04-14T02:36:57.00.b292d5Z</TransferReference>
+		<Owner>RTGS</Owner>
+		<OriginatorApplication>LN-IA2</OriginatorApplication>
+		<MessageFormat>pacs.008.001.08</MessageFormat>
+		<MessageType>
+			<Code>pacs.008.001</Code>
+			<Name>FIToFICustomerCreditTransferV10</Name>
+			<Description>FIToFICustomerCreditTransferV10</Description>
+		</MessageType>
+		<DateCreated>2022-04-14T14:36:53.700+08:00</DateCreated>
+		<PDEIndication>VAR_ISPDM</PDEIndication>
+		<NetworkPriority>Normal</NetworkPriority>
+		<ProcessPriority>Normal</ProcessPriority>
+		<Workflow>FIN_IA_In</Workflow>
+		<WorkflowModel>MAS_FIN_IA_In</WorkflowModel>
+		<BackendChannel>RTGS_IN</BackendChannel>
+		<NetworkChannel>MAS_MNA_IA</NetworkChannel>
+		<Environment>AMHSIT</Environment>
+	</Header>
+	<ProtocolParameters>
+		<InterAct>
+			<SwiftNet>
+				<DelNotRequest>FALSE</DelNotRequest>
+				<RequestCrypto>FALSE</RequestCrypto>
+				<NRIndicator>FALSE</NRIndicator>
+				<DeliveryMode>SnF</DeliveryMode>
+				<RequireSignatureList>FALSE</RequireSignatureList>
+				<CopyIndicator>FALSE</CopyIndicator>
+				<AuthNotifIndicator>FALSE</AuthNotifIndicator>
+				<CopyParameters>
+					<Copy>
+						<![CDATA[<?xml version="1.0"?><Copy xmlns="urn:swift:snl:ns.Sw" xmlns:Doc="urn:swift:snl:ns.Doc"    xmlns:SwInt="urn:swift:snl:ns.SwInt"    xmlns:SwGbl="urn:swift:snl:ns.SwGbl"    xmlns:SwSec="urn:swift:snl:ns.SwSec" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    <CopyType>Partial</CopyType>    <CopyState>Active</CopyState>    <CopySnFRef>mna00001-2022-04-14T02:36:57.00.06d5f9Z</CopySnFRef>    <AuthNotifInd>FALSE</AuthNotifInd>    <OrigSnFRef>mna00001-2022-04-14T02:36:57.00.b292d5Z</OrigSnFRef>    <RecipientDN>ou=rtg,o=masgsgsc,o=swift</RecipientDN>    <SnFRefType>InterAct</SnFRefType></Copy>]]>
+					</Copy>
+				</CopyParameters>
+				<MultiFormatMX>FALSE</MultiFormatMX>
+			</SwiftNet>
+			<SwiftNetRoute>
+				<Requestor>ou=tpa,o=masgsgsc,o=swift</Requestor>
+				<Responder>ou=tpb,o=masgsgsc,o=swift</Responder>
+				<Service>mas.scrips!pi</Service>
+				<RequestType>pacs.008.001.08</RequestType>
+			</SwiftNetRoute>
+			<Parameters>
+				<ApplicationHeader>
+					<![CDATA[<Ah:AppHdr xmlns:Ah="urn:swift:xsd:$ahV10"><Ah:MsgRef>test1</Ah:MsgRef><Ah:CrDate>2022-04-13T15:42:08:08Z</Ah:CrDate></Ah:AppHdr>]]>
+				</ApplicationHeader>
+			</Parameters>
+		</InterAct>
+	</ProtocolParameters>
+	<ChannelParameters>
+		<Code>RTGS_IN</Code>
+		<Protocol>JMS</Protocol>
+		<CommunicationType>Main</CommunicationType>
+		<BackendChannel>
+			<Code>RTGS_IN</Code>
+			<Name>RTGS_IN</Name>
+			<Description>InterAct Incoming to RTGS</Description>
+		</BackendChannel>
+	</ChannelParameters>
+	<ExtractedFields>
+		<ValueDate>2022-04-13T00:00:00+08:00</ValueDate>
+		<Currency>SGD</Currency>
+		<Amount>1</Amount>
+		<FunctionOfTheMessage>RequestWithPayload</FunctionOfTheMessage>
+	</ExtractedFields>
+	<BulkInfo>
+		<BulkType>None</BulkType>
+		<TotalNumberOfMessages>0</TotalNumberOfMessages>
+		<TotalFileSize>0</TotalFileSize>
+		<SequenceNumber>0</SequenceNumber>
+		<bulkedFileSize>0</bulkedFileSize>
+	</BulkInfo>
+	<FlexFields>
+		<string_255_01>MASGSGSCTPB</string_255_01>
+		<string_255_02>MASGSGSCTPA</string_255_02>
+		<string_255_03>OCBCSGSG</string_255_03>
+		<string_255_04>SBINSGSG</string_255_04>
+		<string_255_07>OLZXQ6GGX1-04132022-001</string_255_07>
+		<string_255_20>xcop.001.001.01</string_255_20>
+	</FlexFields>
+	<Data>
+		<Size>3653</Size>
+		<Digest>fac384f5c02d1095970de7201c0b6792682489e07adf561fce8bea0053a1b776</Digest>
+		<DigestAlgorithm>SHA-256</DigestAlgorithm>
+		<Storage>
+			<Format>pacs.008.001.08</Format>
+			<Size>3653</Size>
+			<Digest>fac384f5c02d1095970de7201c0b6792682489e07adf561fce8bea0053a1b776</Digest>
+			<DigestAlgorithm>SHA-256</DigestAlgorithm>
+			<PayloadEncoding>
+				<Code>UTF-8</Code>
+				<IANAName>UTF-8</IANAName>
+			</PayloadEncoding>
+			<Payload>
+				<![CDATA[<Document xmlns="urn:swift:xsd:xcop.001.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    <PmtPrtlCpyNtfctn>        <AppHdr xmlns="urn:swift:xsd:xcop.001.001.01">  <Fr>    <FIId>      <FinInstnId>        <BICFI>{{fromBic}}</BICFI>      </FinInstnId>    </FIId>  </Fr>  <To>    <FIId>      <FinInstnId>        <BICFI>{{toBic}}</BICFI>      </FinInstnId>    </FIId>  </To>  <BizMsgIdr>{{bizMsgIdr}}</BizMsgIdr>  <MsgDefIdr>{{msgDefIdr}}</MsgDefIdr>  <BizSvc>{{bizSvc}}</BizSvc>  <CreDt>2022-04-13T15:42:08+08:00</CreDt>  <Prty>{{transactionType}}</Prty></AppHdr>        <FIToFICstmrCdtTrf xmlns="urn:swift:xsd:xcop.001.001.01">            <GrpHdr>      <MsgId>{{messageId}}</MsgId>      <CreDtTm>2022-04-13T15:42:08+08:00</CreDtTm>      <NbOfTxs>1</NbOfTxs>      <SttlmInf>        <SttlmMtd>CLRG</SttlmMtd>        <ClrSys>          <Cd>MEP</Cd>        </ClrSys>      </SttlmInf>    </GrpHdr>            <CdtTrfTxInf>                <PmtId>        <InstrId>{{payerTransactionReferenceId}}</InstrId>        <EndToEndId>{{endToEndId}}</EndToEndId>        <UETR>{{uetrId}}</UETR>      </PmtId>                <PmtTpInf>        <InstrPrty>NORM</InstrPrty>        <SvcLvl>          <Cd>012</Cd>        </SvcLvl>        <LclInstrm>          <Prtry>CRED</Prtry>        </LclInstrm>      </PmtTpInf>                <IntrBkSttlmAmt Ccy="{{{{settlementCurrency}}}}">{{settlementAmount}}</IntrBkSttlmAmt>                <IntrBkSttlmDt>{{settlementDate}}</IntrBkSttlmDt>                <ChrgBr>SHAR</ChrgBr>                <PrvsInstgAgt1>                    <FinInstnId>                        <BICFI>{{prvAgent1MemberCode}}</BICFI>                    </FinInstnId>                </PrvsInstgAgt1>                <InstgAgt>                    <FinInstnId>                        <BICFI>{{payerMemberCode}}</BICFI>                    </FinInstnId>                </InstgAgt>                <InstdAgt>                    <FinInstnId>                        <BICFI>{{payeeMemberCode}}</BICFI>                    </FinInstnId>                </InstdAgt>                <Dbtr><Nm>{{debtorName}}</Nm>        <PstlAdr>          <StrtNm>{{debtorStName}}</StrtNm>          <BldgNm>{{debtorBuildName}}</BldgNm>          <PstCd>{{debtorPstCode}}</PstCd>          <TwnNm>{{debtorTwnName}}</TwnNm>          <Ctry>{{debtorCtryName}}</Ctry>        </PstlAdr>        <Id>          <OrgId>            <AnyBIC>{{debtor}}</AnyBIC>            <LEI>213800PBMQ7ZZ7VG4J23</LEI>          </OrgId>        </Id>      </Dbtr>                <DbtrAcct>        <Id>          <Othr>            <Id>{{debtorAccount}}</Id>          </Othr>        </Id>      </DbtrAcct>                <DbtrAgt>        <FinInstnId>          <BICFI>{{debtorAgent}}</BICFI>        </FinInstnId>      </DbtrAgt>                <CdtrAgt>        <FinInstnId>          <BICFI>{{creditorAgent}}</BICFI><Nm>MAS</Nm><PstlAdr><AdrLine>10 Shenton Way</AdrLine></PstlAdr>        </FinInstnId>    </CdtrAgt>                <Cdtr><Nm>{{creditorName}}</Nm>       <PstlAdr>          <StrtNm>{{creditorStName}}</StrtNm>          <BldgNm>{{creditorBldgNm}}</BldgNm>          <PstCd>{{creditorPstCd}}</PstCd>          <TwnNm>{{creditorTwnName}}</TwnNm>          <Ctry>{{creditorCtryName}}</Ctry>        </PstlAdr>        <Id>          <OrgId>            <AnyBIC>{{creditor}}</AnyBIC>            <LEI>300300C1125133000036</LEI>          </OrgId>        </Id>      </Cdtr>                <CdtrAcct>        <Id>          <Othr>            <Id>{{creditorAccount}}</Id>          </Othr>        </Id>      </CdtrAcct>                <InstrForNxtAgt>                    <InstrInf>{{InstrForNxtAgtL1}}</InstrInf>                </InstrForNxtAgt>                <RmtInf>        <Ustrd>INV ABC12345</Ustrd>      </RmtInf>            </CdtTrfTxInf>        </FIToFICstmrCdtTrf>    </PmtPrtlCpyNtfctn></Document>]]>
+			</Payload>
+		</Storage>
+	</Data>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+			<Reference URI="">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<DigestValue>u4nf5MVaoINfLzCUdJURCPzmo2SFq/GWWsd/Lp0uHbI=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>chRalEY1r7t1ZuoAooE9EnFmCX5iDp5b3x8PBcNfVlhDcnTPYxTjY4eKEj0pixnIchbIJCCh8Rfrb35p6OL2Q8Wc3ztiOVRq9a0cHg6mTedn8VBUTH6Owc1Fz+UWMRFbQqtNf/g94UZAXMnrk638rpuGF2/9jTdnBpGfubZZlJDVhFMbeplURI7JxhHqaj42Fjjvr73x3sZiUJlxaMsbv/PW1WxisfDreNpFPz5MSE4jreoUEOBUmW2QWvVwT6WkJsGszEUO1VXi9Z94Dq2uesK2wbX5HswD0smsGBGgXQqHMUz5lbfEwyWUkX8Chj6Ndi6mKTMDHDw59ey18Un4sg==</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>MIIDaTCCAlGgAwIBAgIEOAvxIzANBgkqhkiG9w0BAQsFADBlMQswCQYDVQQGEwJTRzESMBAGA1UECBMJU2luZ2Fwb3JlMRIwEAYDVQQHEwlTaW5nYXBvcmUxETAPBgNVBAoTCG1hc2dzZ3NjMQ0wCwYDVQQLEwRjb3JlMQwwCgYDVQQDEwNydGcwHhcNMjIwMTI4MDg1MTIzWhcNMjQwMTI4MDg1MTIzWjBlMQswCQYDVQQGEwJTRzESMBAGA1UECBMJU2luZ2Fwb3JlMRIwEAYDVQQHEwlTaW5nYXBvcmUxETAPBgNVBAoTCG1hc2dzZ3NjMQ0wCwYDVQQLEwRjb3JlMQwwCgYDVQQDEwNydGcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCTshbwZN0iSdr7sz557g9orM3acpbxEESXPuYRmJK7gchi4Sq9mPdKW4s6TzKBB3hwsy53evELFIcuMcE6F2KgaDl4keGR5vYMRPN4VxZhrtG15maAu7vpe5E7EYwVyyUCaSpVB6XMCcFNZr95uIRBQaN2d/pTU6n80Lc4oma/8QjgYpg2NHPNaQttEV7x/IcqXypCI6vjVt5mWHdbmC1cNh8acLYYT7mCIdWhcjiZsqsBZQPvWizZ5DDdPr4tOZKMOS/kcAWarOFVV+AUBXyULdfxYBYQe3huI+CsNmrvRIzyBR6NcZ+3rsElGQOtfR7lbPmlFdF4yUnGQGwmMAe/AgMBAAGjITAfMB0GA1UdDgQWBBRt+eNFykHv/e2fadYMTXgZPCdI1DANBgkqhkiG9w0BAQsFAAOCAQEABH1xq0Ka9gGyQNu2Rn6afcDqC2E/IdV7AhktxUwRANUfpn49DBRuT5HUQAXAB3tL19/thrrAB3PT5VMJjWrArGCncshE2Gn9I+iNNo//ENLj2iKhydK1F+2vZC/89OWU47i+J7N4OWHdWs75uUfHsyaQEz5euu7Mk6/q1679VSsDrHod7XRM1dnWer2NHoyHXtjhggSSCU57EefK0xn00hXVNZhGnIik2+6Jqk0Zt2hwXV1ZFHu5PLr61+GSyRZdsByAqoOESjm5Lk5JooX0pBPr/sFuEuLASmiNrplZwkYjb3V03aUKOjSDf4MN5nHZBO1MIrPrXrJSE5zGWc2+Bg==</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+</AMP>
