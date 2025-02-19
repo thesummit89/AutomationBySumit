@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+ext {
+    slf4jversion = '1.7.7'
+    serenityCoreVersion ='3.3.4'
+    serenityCucumberVersion='3.3.4'
+    junitVersion ='4.13.2'
+    junit5Version = '5.9.2'
+    assertJVersion = '3.22.0'
+    logbackVersion = '1.2.11'
+    jsonVersion ='20220320'
+    xmlUnitVersion ='2.9.0'
+    opencsvVersion ='5.9'
+    jacksonDataTypeJdk8Version ='2.13.3'
+    lombokVersion = '1.18.32'
+}
+dependencies {
+    implementation "org.seleniumhq.selenium:selenium-java:4.11.0"
+    implementation "com.relevantcodes:extentreports:2.41.2"
+    implementation "org.testng:testng:7.5.1"
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation group: 'com.google.guava', name: 'guava', version: '22.0'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'com.oracle.database.jdbc:ojdbc8:21.1.0.0'
+    implementation 'org.eclipse.jetty:jetty-server:11.0.9'
+    implementation 'com.hierynomus:sshj:0.33.0'
+    implementation 'com.jcraft:jsch:0.1.55'
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+test{
+   useTestNG(){
+       outputDirectory = file("test-output")
+       useDefaultListeners= true
+       suites()
+   }
+    systemProperties System.getProperties()
+}
+
+
+gradle.startParameter.continueOnFailure=true
+
+task packageTests(type: Jar){
+    from sourceSets.main.output
+    sourceSets {
+        main {
+            resources {
+                srcDir 'src/main/resources/' // Specify the custom resources directory
+            }
+        }
+    }
+
+    jar {
+        from {
+            sourceSets.main.resources // Include the resources in the JAR
+        }
+        manifest {
+            attributes(
+                    'Main-Class': 'src.main.resources'
+            )
+        }
+    }
+
+
+   // exclude 'temp'
+    //exclude 'data'
+    //exclude 'test'
+}
