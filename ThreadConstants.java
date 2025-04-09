@@ -1,7 +1,5 @@
 package com.threadConst;
 
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
 import com.utility.ControlAction;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -14,8 +12,6 @@ public class ThreadConstants {
     public WebDriver driver;
     public String browser;
     public String OS;
-    public ExtentReports extentReports;
-    public ExtentTest extentTest;
     public String CycleId;
     public String issueKey;
     public int totalTestPassed = 0, totalTestFailed = 0, totalTestSkipped = 0, totalTestCount;

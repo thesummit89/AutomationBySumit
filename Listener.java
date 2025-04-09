@@ -1,10 +1,11 @@
 package com.utility;
 
 import com.basetest.TestBase;
-import com.relevantcodes.extentreports.LogStatus;
-import com.threadConst.TC;
-import org.testng.*;
-import org.testng.annotations.CustomAttribute;
+
+import org.testng.IAnnotationTransformer;
+import org.testng.IReporter;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
 import org.testng.annotations.ITestAnnotation;
 
 import java.lang.reflect.Constructor;
@@ -18,19 +19,19 @@ public class Listener extends TestBase implements ITestListener, IAnnotationTran
     }
     public void onTestSuccess(ITestResult result) {
         if(result.isSuccess()){
-            TC.get().extentTest.log(LogStatus.PASS, result.getMethod().getMethodName() + "Test Case is passed");
+      //      TC.get().extentTest.log(LogStatus.PASS, result.getMethod().getMethodName() + "Test Case is passed");
         }
     }
     public void onTestFailure(ITestResult result) {
         if(!result.isSuccess()){
-            TC.get().extentTest.log(LogStatus.FAIL, result.getMethod().getMethodName() + "Test Case is FAILED");
-            takeScreenshot("Failed");
+  //          TC.get().extentTest.log(LogStatus.FAIL, result.getMethod().getMethodName() + "Test Case is FAILED");
+
 
         }
     }
     public void onTestSkipped(ITestResult result) {
         try {
-            TC.get().extentTest.log(LogStatus.WARNING, "First run for test case is skipped/failed  by Listeners due to :- " + result.getThrowable());
+   //         TC.get().extentTest.log(LogStatus.WARNING, "First run for test case is skipped/failed  by Listeners due to :- " + result.getThrowable());
 
         } catch (Exception e) {
             e.printStackTrace();
