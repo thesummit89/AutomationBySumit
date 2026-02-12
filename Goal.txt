@@ -1,0 +1,122 @@
+Goal
+
+Create a common reusable UI automation utility JAR
+that:
+
+Is framework-independent
+
+Can be reused across multiple automation projects
+
+Supports parallel execution
+
+Is version-controlled and maintainable
+
+🚀 Step-by-Step Recommended Architecture
+1️⃣ First Decide What Goes Into Common JAR
+
+Only put truly reusable, generic components.
+
+✅ Good candidates:
+
+WebDriver factory
+
+ThreadLocal driver manager
+
+Wait utilities
+
+Screenshot utilities
+
+Logging wrapper
+
+Retry mechanism
+
+Config reader
+
+Common exception handling
+
+Base page class
+
+API utilities (if generic)
+
+Reporting integration wrapper
+
+❌ DO NOT put:
+
+Project-specific locators
+
+Test data
+
+Business workflows
+
+Page objects for specific apps
+
+Environment URLs
+
+Keep it independent of application logic.
+
+2️⃣ Design It Like a Mini Framework (Layered)
+
+Recommended structure:
+
+automation-core/
+│
+├── driver/
+│   ├── DriverManager.java
+│   ├── DriverFactory.java
+│
+├── utils/
+│   ├── WaitUtils.java
+│   ├── ScreenshotUtils.java
+│   ├── ConfigReader.java
+│   ├── RetryUtils.java
+│
+├── base/
+│   ├── BasePage.java
+│
+├── reporting/
+│   ├── AllureManager.java
+│
+└── constants/
+
+
+Think of it as:
+
+🔥 Selenium SDK for your organization
+
+3️⃣ Thread Safety (Very Important)
+
+Since you're running parallel:
+
+DriverManager example:
+public class DriverManager {
+
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
+
+    public static void setDriver(WebDriver webDriver) {
+        driver.set(webDriver);
+    }
+
+    public static void quitDriver() {
+        driver.get().quit();
+        driver.remove();
+    }
+}
+
+
+This must be inside common JAR.
+
+4️⃣ Make It Framework-Agnostic
+
+Your utility JAR should not depend tightly on:
+
+JUnit only
+
+TestNG only
+
+Cucumber only
+
+Instead:
